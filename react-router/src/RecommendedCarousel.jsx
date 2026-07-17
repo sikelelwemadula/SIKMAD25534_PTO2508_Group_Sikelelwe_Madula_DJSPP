@@ -13,7 +13,7 @@ function PrevArrow({ onClick }) {
       onClick={onClick}
       style={{
         position: "absolute",
-        left: "-4px",
+        left: "-44px",
         top: "50%",
         transform: "translateY(-50%)",
         zIndex: 2,
@@ -41,7 +41,7 @@ function NextArrow({ onClick }) {
       onClick={onClick}
       style={{
         position: "absolute",
-        right: "-4px",
+        right: "-44px",
         top: "50%",
         transform: "translateY(-50%)",
         zIndex: 2,
@@ -112,7 +112,7 @@ export default function RecommendedCarousel() {
   if (loading) return <div>Assembling dynamic dashboard items...</div>;
 
   return (
-    <div style={{ width: "90%", margin: "0 auto", padding: "40px 0" }}>
+    <div style={{ width: "90%", margin: "0 auto", padding: "10px 0" }}>
       <h2 style={{ marginBottom: "16px" }}>Recommended Primary Shows per Genre</h2>
 
       <div style={{ position: "relative", padding: "0 36px" }}>
@@ -135,8 +135,8 @@ export default function RecommendedCarousel() {
                 <div
                   style={{
                     display: "grid",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-                    gap: "12px",
+                    gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
+                    gap: "10px",
                   }}
                 >
                   {genre.shows.map((show) => (
@@ -145,8 +145,8 @@ export default function RecommendedCarousel() {
                       style={{
                         background: "#2a2a33",
                         borderRadius: "10px",
-                        padding: "12px",
-                        minHeight: "240px",
+                        padding: "10px",
+                        minHeight: "190px",
                         display: "flex",
                         flexDirection: "column",
                       }}
@@ -156,20 +156,21 @@ export default function RecommendedCarousel() {
                         alt={show.title}
                         style={{
                           width: "100%",
+                          maxWidth: "250px",
                           borderRadius: "8px",
-                          marginBottom: "12px",
+                          marginBottom: "10px",
                           aspectRatio: "1 / 1",
                           objectFit: "cover",
                         }}
                       />
-                      <h4 style={{ margin: "0 0 6px", fontSize: "1rem" }}>
+                      <h4 style={{ margin: "0 0 6px", fontSize: "0.88rem" }}>
                         {show.title}
                       </h4>
                       <p
                         style={{
                           margin: 0,
                           color: "#b3b3b3",
-                          fontSize: "0.85rem",
+                          fontSize: "0.78rem",
                         }}
                       >
                         Seasons: {show.seasons}
