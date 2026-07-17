@@ -31,7 +31,6 @@ export function GlobalPlayer() {
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
       />
-      <button onClick={pauseTrack}>Pause</button>
     </div>
   );
 }
