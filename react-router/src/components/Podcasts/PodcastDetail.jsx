@@ -104,7 +104,12 @@ export default function PodcastDetail({ podcast, genres }) {
                   </p>
                   <p className={styles.episodeDesc}>{ep.description}</p>
                 </div>
-                <button onClick={() => playTrack(trackData)}>Play</button>
+                <button
+                  className={styles.playButton}
+                  onClick={() => playTrack(trackData)}
+                >
+                  Play
+                </button>
               </div>
             );
           })}
