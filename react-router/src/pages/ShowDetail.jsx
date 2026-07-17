@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { fetchSinglePodcast } from "../api/fetchPata";
@@ -5,31 +6,21 @@ import { Loading, Error, PodcastDetail } from "../components";
 
 /**
  * ShowDetail page component for displaying detailed information about a single podcast.
- *
- * - Extracts the podcast ID from the URL using React Router's `useParams`.
- * - Optionally retrieves genre data from navigation state via `useLocation`.
- * - Fetches podcast data from the API on mount using `fetchSinglePodcast`.
- * - Displays a loading state, error message, or the detailed podcast view.
- *
- * Components used:
- * - `Loading` while fetching data
- * - `Error` if fetch fails
- * - `PodcastDetail` when data is successfully retrieved
- *
- * @returns {JSX.Element} The detailed view of a selected podcast.
  */
 export default function ShowDetail() {
   const { id } = useParams();
   const location = useLocation();
   const { genres } = location.state || {};
 
-  const [podcast, setPodcast] = useState([]);
+  // FIX 1: Initialize as null instead of an array, since a single podcast is an object
+  const [podcast, setPodcast] = useState(null); 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchSinglePodcast(id, setPodcast, setError, setLoading);
-  }, []);
+  }, [id]); // FIX 2: Add 'id' here so it updates properly if the route shifts
+
   return (
     <>
       {loading && <Loading message="Loading podcast..." />}
@@ -37,7 +28,12 @@ export default function ShowDetail() {
       {error && (
         <Error message={`Error occurred while fetching podcast: ${error}`} />
       )}
-      {!loading && !error && (
+      
+      {/* 
+        The audio logic links here: your 'podcast' object contains seasons and episodes.
+        We pass this data down into <PodcastDetail /> where the UI buttons will map over it.
+      */}
+      {!loading && !error && podcast && (
         <PodcastDetail podcast={podcast} genres={genres} />
       )}
     </>

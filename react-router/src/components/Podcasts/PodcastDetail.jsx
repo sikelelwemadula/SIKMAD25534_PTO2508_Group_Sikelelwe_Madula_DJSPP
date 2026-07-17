@@ -1,22 +1,22 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // ← add this
+import { useNavigate } from "react-router-dom";
 import styles from "./PodcastDetail.module.css";
 import { formatDate } from "../../utils/formatDate";
 import GenreTags from "../UI/GenreTags";
+import { useAudio } from "../../context/AudioContext";
 
 export default function PodcastDetail({ podcast, genres }) {
   const [selectedSeasonIndex, setSelectedSeasonIndex] = useState(0);
   const season = podcast.seasons[selectedSeasonIndex];
-  const navigate = useNavigate(); // ← hook for navigation
+  const navigate = useNavigate();
+  const { playTrack } = useAudio();
 
   return (
     <div className={styles.container}>
-      {/* Back Button */}
       <button className={styles.backButton} onClick={() => navigate(-1)}>
         ← Back
       </button>
 
-      {/* Header */}
       <div className={styles.header}>
         <img src={podcast.image} alt="Podcast Cover" className={styles.cover} />
         <div>
@@ -55,11 +55,10 @@ export default function PodcastDetail({ podcast, genres }) {
         </div>
       </div>
 
-      {/* Season Details */}
       <div className={styles.seasonDetails}>
         <div className={styles.seasonIntro}>
           <div className={styles.left}>
-            <img className={styles.seasonCover} src={season.image} />
+            <img className={styles.seasonCover} src={season.image} alt="" />
             <div>
               <h3>
                 Season {selectedSeasonIndex + 1}: {season.title}
@@ -84,17 +83,31 @@ export default function PodcastDetail({ podcast, genres }) {
         </div>
 
         <div className={styles.episodeList}>
-          {season.episodes.map((ep, index) => (
-            <div key={index} className={styles.episodeCard}>
-              <img className={styles.episodeCover} src={season.image} alt="" />
-              <div className={styles.episodeInfo}>
-                <p className={styles.episodeTitle}>
-                  Episode {index + 1}: {ep.title}
-                </p>
-                <p className={styles.episodeDesc}>{ep.description}</p>
+          {season.episodes.map((ep, index) => {
+            const trackData = {
+              id: `${podcast.id}-${selectedSeasonIndex + 1}-${ep.episode}`,
+              title: ep.title,
+              artist: podcast.title,
+              src: ep.file,
+            };
+
+            return (
+              <div key={index} className={styles.episodeCard}>
+                <img
+                  className={styles.episodeCover}
+                  src={season.image}
+                  alt=""
+                />
+                <div className={styles.episodeInfo}>
+                  <p className={styles.episodeTitle}>
+                    Episode {index + 1}: {ep.title}
+                  </p>
+                  <p className={styles.episodeDesc}>{ep.description}</p>
+                </div>
+                <button onClick={() => playTrack(trackData)}>Play</button>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>
