@@ -7,6 +7,7 @@ import {
   Loading,
   Error,
 } from "../components";
+import RecommendedCarousel from "../RecommendedCarousel";
 import styles from "./Home.module.css";
 import { genres } from "../data";
 import { PodcastContext } from "../context/PodcastContext";
@@ -43,6 +44,7 @@ export default function Home() {
 
       {!loading && !error && (
         <>
+          <RecommendedCarousel />
           <PodcastGrid />
           <Pagination />
         </>
