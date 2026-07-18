@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { PodcastContext } from "../context/PodcastContext";
+import { useAudio } from "../context/AudioContext";
 import { fetchMultiplePodcasts } from "../api/fetchPata";
 import { Loading } from "../components";
 import GenreFilter from "../components/filters/GenreFilter";
@@ -9,6 +10,7 @@ import styles from "./FavouriteEpisodes.module.css";
 
 export default function FavoriteEpisodes() {
   const { favorites, toggleFavorite, genre, sortKey } = useContext(PodcastContext);
+  const { playTrack } = useAudio();
   const [favoriteEpisodesList, setFavoriteEpisodesList] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -35,12 +37,13 @@ export default function FavoriteEpisodes() {
               compiledEpisodes.push({
                 id: uniqueId,
                 showTitle: show.title,
-                showImage: show.image, // FIX 1: Save the actual podcast cover image URL here
+                showImage: show.image,
                 seasonNumber: season.season,
                 episodeNumber: episode.episode,
                 title: episode.title,
                 description: episode.description,
-                genres: show.genres || []
+                genres: show.genres || [],
+                file: episode.file
               });
             }
           });
@@ -83,7 +86,8 @@ export default function FavoriteEpisodes() {
     <div className={styles.container}>
       <h1 className={styles.title}>Your Favorite Episodes</h1>
 
-      <section className={styles.controls} style={{ display: "flex", gap: "12px", marginBottom: "24px" }}>
+      {/* Responsive layout controls */}
+      <section className={styles.controls}>
         <GenreFilter genres={genres} />
         <SortSelect />
       </section>
@@ -96,34 +100,50 @@ export default function FavoriteEpisodes() {
             <h2 className={styles.showTitleHeader}>{showName}</h2>
 
             <div className={styles.episodesList}>
-              {episodes.map(episode => (
-                <div key={episode.id} className={styles.episodeRow}>
-                  
-                  {/* FIX 2: Replaced the pink div box with the actual podcast cover image */}
-                  <img 
-                    src={episode.showImage} 
-                    alt={episode.showTitle} 
-                    className={styles.thumbnailPlaceholder} 
-                  />
+              {episodes.map(episode => {
+                const trackData = {
+                  id: episode.id,
+                  title: episode.title,
+                  artist: episode.showTitle,
+                  src: episode.file,
+                };
 
-                  <div className={styles.contentDetails}>
-                    <span className={styles.metaText}>
-                      Season {episode.seasonNumber}: Episode {episode.episodeNumber}
-                    </span>
-                    <h3 className={styles.episodeTitle}>{episode.title}</h3>
-                    <p className={styles.description}>{episode.description}</p>
+                return (
+                  <div key={episode.id} className={styles.episodeRow}>
+                    <img 
+                      src={episode.showImage} 
+                      alt={episode.showTitle} 
+                      className={styles.thumbnailPlaceholder} 
+                    />
+
+                    <div className={styles.contentDetails}>
+                      <span className={styles.metaText}>
+                        Season {episode.seasonNumber}: Episode {episode.episodeNumber}
+                      </span>
+                      <h3 className={styles.episodeTitle}>{episode.title}</h3>
+                      <p className={styles.description}>{episode.description}</p>
+                    </div>
+
+                    {/* Styled action panel grouping player and favorites together */}
+                    <div className={styles.actionsPanel}>
+                      <button
+                        className={styles.playButton}
+                        onClick={() => playTrack(trackData)}
+                      >
+                        Play
+                      </button>
+
+                      <button 
+                        onClick={() => toggleFavorite(episode.id)}
+                        className={styles.heartButton}
+                        aria-label="Remove from favorites"
+                      >
+                        ♥
+                      </button>
+                    </div>
                   </div>
-
-                  <button 
-                    onClick={() => toggleFavorite(episode.id)}
-                    className={styles.heartButton}
-                    aria-label="Remove from favorites"
-                    style={{ fontSize: "24px", color: "#ff4d4d", background: "none", border: "none", cursor: "pointer" }}
-                  >
-                    ♥
-                  </button>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         ))
