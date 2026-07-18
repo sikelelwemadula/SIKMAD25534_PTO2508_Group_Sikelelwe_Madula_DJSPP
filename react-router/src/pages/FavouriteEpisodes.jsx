@@ -2,8 +2,9 @@ import React, { useContext, useEffect, useState } from "react";
 import { PodcastContext } from "../context/PodcastContext";
 import { fetchMultiplePodcasts } from "../api/fetchPata";
 import { Loading } from "../components";
-import { GenreFilter, SortSelect } from "../components"; // Adjust path if they aren't exported from index.js
-import { genres } from "../data"; // Import the master genres list from your data file
+import GenreFilter from "../components/filters/GenreFilter";
+import SortSelect from "../components/filters/SortSelect";
+import { genres } from "../data";
 import styles from "./FavouriteEpisodes.module.css";
 
 export default function FavoriteEpisodes() {
@@ -34,11 +35,12 @@ export default function FavoriteEpisodes() {
               compiledEpisodes.push({
                 id: uniqueId,
                 showTitle: show.title,
+                showImage: show.image, // FIX 1: Save the actual podcast cover image URL here
                 seasonNumber: season.season,
                 episodeNumber: episode.episode,
                 title: episode.title,
                 description: episode.description,
-                genres: show.genres || [] // Keep track of the show's genres for filtering
+                genres: show.genres || []
               });
             }
           });
@@ -52,33 +54,21 @@ export default function FavoriteEpisodes() {
     loadFavoriteDetails();
   }, [favorites]);
 
-  // Apply genre filter and sorting to favorites list based on the global context states
   const getFilteredAndSortedFavorites = () => {
     let data = [...favoriteEpisodesList];
-
-    // 1. Filter by Genre
     if (genre !== "all") {
       data = data.filter((ep) => ep.genres.includes(Number(genre)));
     }
-
-    // 2. Sort by Title A-Z / Z-A
-    switch (sortKey) {
-      case "title-asc":
-        data.sort((a, b) => a.title.localeCompare(b.title));
-        break;
-      case "title-desc":
-        data.sort((a, b) => b.title.localeCompare(a.title));
-        break;
-      default:
-        break;
+    if (sortKey === "title-asc") {
+      data.sort((a, b) => a.title.localeCompare(b.title));
+    } else if (sortKey === "title-desc") {
+      data.sort((a, b) => b.title.localeCompare(a.title));
     }
-
     return data;
   };
 
   const processedFavorites = getFilteredAndSortedFavorites();
 
-  // Group the processed list by show title
   const groupedFavorites = processedFavorites.reduce((acc, episode) => {
     if (!acc[episode.showTitle]) {
       acc[episode.showTitle] = [];
@@ -93,7 +83,6 @@ export default function FavoriteEpisodes() {
     <div className={styles.container}>
       <h1 className={styles.title}>Your Favorite Episodes</h1>
 
-      {/* Renders the filter controls underneath the main heading */}
       <section className={styles.controls} style={{ display: "flex", gap: "12px", marginBottom: "24px" }}>
         <GenreFilter genres={genres} />
         <SortSelect />
@@ -109,9 +98,13 @@ export default function FavoriteEpisodes() {
             <div className={styles.episodesList}>
               {episodes.map(episode => (
                 <div key={episode.id} className={styles.episodeRow}>
-                  <div className={styles.thumbnailPlaceholder}>
-                    {showName ? showName.substring(0, 3).toUpperCase() : "POD"}
-                  </div>
+                  
+                  {/* FIX 2: Replaced the pink div box with the actual podcast cover image */}
+                  <img 
+                    src={episode.showImage} 
+                    alt={episode.showTitle} 
+                    className={styles.thumbnailPlaceholder} 
+                  />
 
                   <div className={styles.contentDetails}>
                     <span className={styles.metaText}>
