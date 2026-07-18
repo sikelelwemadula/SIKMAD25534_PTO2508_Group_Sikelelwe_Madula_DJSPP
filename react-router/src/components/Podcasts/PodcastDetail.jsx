@@ -1,15 +1,17 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./PodcastDetail.module.css";
 import { formatDate } from "../../utils/formatDate";
 import GenreTags from "../UI/GenreTags";
 import { useAudio } from "../../context/AudioContext";
+import { PodcastContext } from "../../context/PodcastContext";
 
 export default function PodcastDetail({ podcast, genres }) {
   const [selectedSeasonIndex, setSelectedSeasonIndex] = useState(0);
   const season = podcast.seasons[selectedSeasonIndex];
   const navigate = useNavigate();
   const { playTrack } = useAudio();
+  const { favorites, toggleFavorite } = useContext(PodcastContext);
 
   return (
     <div className={styles.container}>
@@ -84,8 +86,10 @@ export default function PodcastDetail({ podcast, genres }) {
 
         <div className={styles.episodeList}>
           {season.episodes.map((ep, index) => {
+            const uniqueEpisodeId = `${podcast.id}-${selectedSeasonIndex + 1}-${ep.episode}`;
+            const isFavorited = favorites.includes(uniqueEpisodeId);
             const trackData = {
-              id: `${podcast.id}-${selectedSeasonIndex + 1}-${ep.episode}`,
+              id: uniqueEpisodeId,
               title: ep.title,
               artist: podcast.title,
               src: ep.file,
@@ -98,6 +102,14 @@ export default function PodcastDetail({ podcast, genres }) {
                   src={season.image}
                   alt=""
                 />
+                <button
+                  type="button"
+                  className={styles.favoriteButton}
+                  onClick={() => toggleFavorite(uniqueEpisodeId)}
+                  aria-label={isFavorited ? "Remove from favorites" : "Add to favorites"}
+                >
+                  <span aria-hidden="true">{isFavorited ? "♥" : "♡"}</span>
+                </button>
                 <div className={styles.episodeInfo}>
                   <p className={styles.episodeTitle}>
                     Episode {index + 1}: {ep.title}

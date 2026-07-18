@@ -37,3 +37,18 @@ export async function fetchSinglePodcast(id, setPodcast, setError, setLoading) {
     setLoading(false);
   }
 }
+
+export async function fetchMultiplePodcasts(ids) {
+  try {
+    const promises = ids.map(id => 
+      fetch(`https://podcast-api.netlify.app/id/${id}`).then(res => {
+        if (!res.ok) throw new Error(`Failed to fetch ID: ${id}`);
+        return res.json();
+      })
+    );
+    return await Promise.all(promises);
+  } catch (err) {
+    console.error("Failed to fetch multiple podcasts:", err);
+    return [];
+  }
+}

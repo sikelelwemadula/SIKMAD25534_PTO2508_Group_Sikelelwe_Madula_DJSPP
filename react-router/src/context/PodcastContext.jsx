@@ -1,9 +1,11 @@
+
+
 import React, { createContext, useEffect, useState } from "react";
 import { fetchPodcasts } from "../api/fetchPata";
 
 /**
  * React context for managing podcast-related state and filters.
- * Provides access to podcast data, pagination, filtering, and sorting.
+ * Provides access to podcast data, pagination, filtering, sorting, and favorites.
  *
  * @typedef {Object} Podcast
  * @property {number} id - Unique identifier for the podcast.
@@ -53,6 +55,12 @@ export function PodcastProvider({ children }) {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
 
+  // Store only the IDs of the favorited episodes (persisted via localStorage)
+  const [favorites, setFavorites] = useState(() => {
+    const saved = localStorage.getItem("podcast_favorites");
+    return saved ? JSON.parse(saved) : [];
+  });
+
   /**
    * Fetch podcast data from the API when the provider mounts.
    */
@@ -66,6 +74,13 @@ export function PodcastProvider({ children }) {
   useEffect(() => {
     setPage(1);
   }, [search, sortKey, genre]);
+
+  /**
+   * Save favorites to localStorage whenever they change.
+   */
+  useEffect(() => {
+    localStorage.setItem("podcast_favorites", JSON.stringify(favorites));
+  }, [favorites]);
 
   /**
    * Dynamically calculate the number of items per page based on screen width.
@@ -88,6 +103,18 @@ export function PodcastProvider({ children }) {
     window.addEventListener("resize", calculatePageSize);
     return () => window.removeEventListener("resize", calculatePageSize);
   }, []);
+
+  /**
+   * Toggle favorite status on or off for a specific episode ID.
+   * @param {string} episodeId - The composite ID of the episode (e.g. 'showId-season-episode').
+   */
+  const toggleFavorite = (episodeId) => {
+    setFavorites((prev) =>
+      prev.includes(episodeId)
+        ? prev.filter((id) => id !== episodeId)
+        : [...prev, episodeId]
+    );
+  };
 
   /**
    * Apply filtering and sorting to the full dataset based on search input,
@@ -154,9 +181,12 @@ export function PodcastProvider({ children }) {
     podcasts: paged,
     allPodcastsCount: filtered.length,
     allPodcasts, // useful for detail pages
+    favorites, // array of favorited episode IDs
+    toggleFavorite, // function to add/remove favorites
   };
 
   return (
     <PodcastContext.Provider value={value}>{children}</PodcastContext.Provider>
   );
 }
+

@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Header from "./components/UI/Header";
 import Home from "./pages/Home";
 import ShowDetail from "./pages/ShowDetail";
+import FavoriteEpisodes from "./pages/FavouriteEpisodes";
 import { PodcastProvider } from "./context/PodcastContext";
 import { AudioProvider } from "./context/AudioContext";
 import GlobalPlayer from "./components/GlobalPlayer";
@@ -25,6 +26,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/show/:id" element={<ShowDetail />} />
+            <Route path="/favorites" element={<FavoriteEpisodes />} />
           </Routes>
 
           <GlobalPlayer />
