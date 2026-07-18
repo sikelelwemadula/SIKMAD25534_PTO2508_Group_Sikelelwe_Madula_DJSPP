@@ -1,12 +1,13 @@
-import React, { useContext, useEffect, useState } from 'react';
-// REMOVED: import { Heart } from 'lucide-react'; 
-import { PodcastContext } from '../context/PodcastContext';
-import { fetchMultiplePodcasts } from '../api/fetchPata';
-import { Loading } from '../components';
-import styles from './FavouriteEpisodes.module.css';
+import React, { useContext, useEffect, useState } from "react";
+import { PodcastContext } from "../context/PodcastContext";
+import { fetchMultiplePodcasts } from "../api/fetchPata";
+import { Loading } from "../components";
+import { GenreFilter, SortSelect } from "../components"; // Adjust path if they aren't exported from index.js
+import { genres } from "../data"; // Import the master genres list from your data file
+import styles from "./FavouriteEpisodes.module.css";
 
 export default function FavoriteEpisodes() {
-  const { favorites, toggleFavorite } = useContext(PodcastContext);
+  const { favorites, toggleFavorite, genre, sortKey } = useContext(PodcastContext);
   const [favoriteEpisodesList, setFavoriteEpisodesList] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -19,7 +20,7 @@ export default function FavoriteEpisodes() {
     const loadFavoriteDetails = async () => {
       setLoading(true);
       
-      const showIds = [...new Set(favorites.map(favId => String(favId).split('-')[0]))];
+      const showIds = [...new Set(favorites.map(favId => String(favId).split("-")[0]))];
       const detailedShows = await fetchMultiplePodcasts(showIds);
       const compiledEpisodes = [];
 
@@ -36,7 +37,8 @@ export default function FavoriteEpisodes() {
                 seasonNumber: season.season,
                 episodeNumber: episode.episode,
                 title: episode.title,
-                description: episode.description
+                description: episode.description,
+                genres: show.genres || [] // Keep track of the show's genres for filtering
               });
             }
           });
@@ -50,7 +52,34 @@ export default function FavoriteEpisodes() {
     loadFavoriteDetails();
   }, [favorites]);
 
-  const groupedFavorites = favoriteEpisodesList.reduce((acc, episode) => {
+  // Apply genre filter and sorting to favorites list based on the global context states
+  const getFilteredAndSortedFavorites = () => {
+    let data = [...favoriteEpisodesList];
+
+    // 1. Filter by Genre
+    if (genre !== "all") {
+      data = data.filter((ep) => ep.genres.includes(Number(genre)));
+    }
+
+    // 2. Sort by Title A-Z / Z-A
+    switch (sortKey) {
+      case "title-asc":
+        data.sort((a, b) => a.title.localeCompare(b.title));
+        break;
+      case "title-desc":
+        data.sort((a, b) => b.title.localeCompare(a.title));
+        break;
+      default:
+        break;
+    }
+
+    return data;
+  };
+
+  const processedFavorites = getFilteredAndSortedFavorites();
+
+  // Group the processed list by show title
+  const groupedFavorites = processedFavorites.reduce((acc, episode) => {
     if (!acc[episode.showTitle]) {
       acc[episode.showTitle] = [];
     }
@@ -64,8 +93,14 @@ export default function FavoriteEpisodes() {
     <div className={styles.container}>
       <h1 className={styles.title}>Your Favorite Episodes</h1>
 
+      {/* Renders the filter controls underneath the main heading */}
+      <section className={styles.controls} style={{ display: "flex", gap: "12px", marginBottom: "24px" }}>
+        <GenreFilter genres={genres} />
+        <SortSelect />
+      </section>
+
       {Object.keys(groupedFavorites).length === 0 ? (
-        <p className={styles.emptyMessage}>You haven't saved any favorite episodes yet.</p>
+        <p className={styles.emptyMessage}>No matching favorite episodes found.</p>
       ) : (
         Object.entries(groupedFavorites).map(([showName, episodes]) => (
           <div key={showName} className={styles.showCard}>
@@ -86,12 +121,11 @@ export default function FavoriteEpisodes() {
                     <p className={styles.description}>{episode.description}</p>
                   </div>
 
-                  {/* FIXED: Uses plain text heart instead of lucide component */}
                   <button 
                     onClick={() => toggleFavorite(episode.id)}
                     className={styles.heartButton}
                     aria-label="Remove from favorites"
-                    style={{ fontSize: '24px', color: '#ff4d4d', background: 'none', border: 'none', cursor: 'pointer' }}
+                    style={{ fontSize: "24px", color: "#ff4d4d", background: "none", border: "none", cursor: "pointer" }}
                   >
                     ♥
                   </button>
