@@ -1,6 +1,7 @@
 .appHeader {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 1rem;
   background: white;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
@@ -9,4 +10,10 @@
 .appHeader a {
   text-decoration: none;
   color: black;
+}
+
+.appHeader nav a {
+  font-size: 1.25rem;
+  font-weight: 600;
+  
 }
