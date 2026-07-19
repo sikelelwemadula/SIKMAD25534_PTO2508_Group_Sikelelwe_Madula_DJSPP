@@ -2,6 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
   gap: 1rem;
   padding: 1rem;
   background: var(--header-bg);
@@ -11,7 +12,14 @@
 .headerContent {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 1rem;
+  flex: 1 1 320px;
+}
+
+.appHeader h1 {
+  margin: 0;
+  font-size: clamp(1.4rem, 3.2vw, 2rem);
 }
 
 .appHeader a {
@@ -23,10 +31,15 @@
   text-decoration: underline;
 }
 
+.appHeader nav {
+  display: flex;
+  align-items: center;
+}
+
 .appHeader nav a {
-  font-size: 1.25rem;
+  font-size: 1.05rem;
   font-weight: 600;
-  margin-left: 4rem;
+  margin-left: 0;
 }
 
 .appHeader button {
@@ -37,9 +50,33 @@
   font-weight: 600;
   background: var(--surface-strong);
   color: var(--button-text);
-  transition: transform 0.2s ease-in-out; 
+  transition: transform 0.2s ease-in-out;
+  flex-shrink: 0;
 }
 
 .appHeader button:hover {
-  transform: scale(1.10);
+  transform: scale(1.1);
+}
+
+@media (max-width: 600px) {
+  .appHeader {
+    align-items: stretch;
+  }
+
+  .headerContent {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .appHeader nav {
+    width: 100%;
+  }
+
+  .appHeader nav a {
+    font-size: 1rem;
+  }
+
+  .appHeader button {
+    align-self: flex-start;
+  }
 }
