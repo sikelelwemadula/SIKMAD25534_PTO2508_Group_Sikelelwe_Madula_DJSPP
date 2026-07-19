@@ -8,9 +8,20 @@ import SortSelect from "../components/filters/SortSelect";
 import { genres } from "../data";
 import styles from "./FavouriteEpisodes.module.css";
 
+const formatTime = (seconds) => {
+  if (!Number.isFinite(seconds)) return "0:00";
+
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60)
+    .toString()
+    .padStart(2, "0");
+
+  return `${mins}:${secs}`;
+};
+
 export default function FavoriteEpisodes() {
   const { favorites, toggleFavorite, genre, sortKey } = useContext(PodcastContext);
-  const { playTrack } = useAudio();
+  const { playTrack, getEpisodeProgress, isEpisodeFinished } = useAudio();
   const [favoriteEpisodesList, setFavoriteEpisodesList] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -124,6 +135,8 @@ export default function FavoriteEpisodes() {
 
             <div className={styles.episodesList}>
               {episodes.map(episode => {
+                const savedProgress = getEpisodeProgress(episode.id);
+                const isFinished = isEpisodeFinished(episode.id);
                 const trackData = {
                   id: episode.id,
                   title: episode.title,
@@ -145,6 +158,16 @@ export default function FavoriteEpisodes() {
                       </span>
                       <h3 className={styles.episodeTitle}>{episode.title}</h3>
                       <p className={styles.description}>{episode.description}</p>
+                      <p className={styles.progressText}>
+                        {isFinished
+                          ? "Finished"
+                          : savedProgress > 0
+                            ? `Resume from ${formatTime(savedProgress)}`
+                            : "Not started yet"}
+                      </p>
+                      <span className={isFinished ? styles.finishedBadge : styles.progressBadge}>
+                        {isFinished ? "✓ Finished" : savedProgress > 0 ? "▶ Resume" : "○ New"}
+                      </span>
                     </div>
 
                     {/* Styled action panel grouping player and favorites together */}
@@ -153,7 +176,7 @@ export default function FavoriteEpisodes() {
                         className={styles.playButton}
                         onClick={() => playTrack(trackData)}
                       >
-                        Play
+                        {isFinished ? "Replay" : savedProgress > 0 ? "Resume" : "Play"}
                       </button>
 
                       <button 

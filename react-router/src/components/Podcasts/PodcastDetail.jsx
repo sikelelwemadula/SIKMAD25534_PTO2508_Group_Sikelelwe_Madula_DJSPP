@@ -6,11 +6,22 @@ import GenreTags from "../UI/GenreTags";
 import { useAudio } from "../../context/AudioContext";
 import { PodcastContext } from "../../context/PodcastContext";
 
+const formatTime = (seconds) => {
+  if (!Number.isFinite(seconds)) return "0:00";
+
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60)
+    .toString()
+    .padStart(2, "0");
+
+  return `${mins}:${secs}`;
+};
+
 export default function PodcastDetail({ podcast, genres }) {
   const [selectedSeasonIndex, setSelectedSeasonIndex] = useState(0);
   const season = podcast.seasons[selectedSeasonIndex];
   const navigate = useNavigate();
-  const { playTrack } = useAudio();
+  const { playTrack, getEpisodeProgress, isEpisodeFinished } = useAudio();
   const { favorites, toggleFavorite } = useContext(PodcastContext);
 
   return (
@@ -88,6 +99,8 @@ export default function PodcastDetail({ podcast, genres }) {
           {season.episodes.map((ep, index) => {
             const uniqueEpisodeId = `${podcast.id}-${selectedSeasonIndex + 1}-${ep.episode}`;
             const isFavorited = favorites.includes(uniqueEpisodeId);
+            const savedProgress = getEpisodeProgress(uniqueEpisodeId);
+            const isFinished = isEpisodeFinished(uniqueEpisodeId);
             const trackData = {
               id: uniqueEpisodeId,
               title: ep.title,
@@ -115,12 +128,22 @@ export default function PodcastDetail({ podcast, genres }) {
                     Episode {index + 1}: {ep.title}
                   </p>
                   <p className={styles.episodeDesc}>{ep.description}</p>
+                  <p className={styles.progressText}>
+                    {isFinished
+                      ? "Finished"
+                      : savedProgress > 0
+                        ? `Resume from ${formatTime(savedProgress)}`
+                        : "Not started yet"}
+                  </p>
+                  <span className={isFinished ? styles.finishedBadge : styles.progressBadge}>
+                    {isFinished ? "✓ Finished" : savedProgress > 0 ? "▶ Resume" : "○ New"}
+                  </span>
                 </div>
                 <button
                   className={styles.playButton}
                   onClick={() => playTrack(trackData)}
                 >
-                  Play
+                  {isFinished ? "Replay" : savedProgress > 0 ? "Resume" : "Play"}
                 </button>
               </div>
             );

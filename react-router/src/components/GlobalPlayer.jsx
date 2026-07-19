@@ -13,7 +13,13 @@ const formatTime = (seconds) => {
 };
 
 export function GlobalPlayer() {
-  const { currentTrack, isPlaying, setIsPlaying } = useAudio();
+  const {
+    currentTrack,
+    isPlaying,
+    setIsPlaying,
+    updateProgress,
+    markEpisodeFinished,
+  } = useAudio();
   const audioRef = useRef(null);
   const [elapsed, setElapsed] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -25,10 +31,11 @@ export function GlobalPlayer() {
       return;
     }
 
-    setElapsed(0);
+    const resumeTime = currentTrack.resumeTime || 0;
+    audio.currentTime = resumeTime;
+    setElapsed(resumeTime);
     setDuration(0);
-    audio.currentTime = 0;
-  }, [currentTrack?.src]);
+  }, [currentTrack?.id, currentTrack?.src, currentTrack?.resumeTime]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -42,7 +49,7 @@ export function GlobalPlayer() {
     } else {
       audio.pause();
     }
-  }, [currentTrack?.src, isPlaying, setIsPlaying]);
+  }, [currentTrack?.src, currentTrack?.id, isPlaying, setIsPlaying]);
 
   if (!currentTrack?.src) {
     return null;
@@ -77,8 +84,26 @@ export function GlobalPlayer() {
           src={currentTrack.src}
           onPlay={() => setIsPlaying(true)}
           onPause={() => setIsPlaying(false)}
-          onLoadedMetadata={(event) => setDuration(event.currentTarget.duration || 0)}
-          onTimeUpdate={(event) => setElapsed(event.currentTarget.currentTime || 0)}
+          onLoadedMetadata={(event) => {
+            const nextDuration = event.currentTarget.duration || 0;
+            setDuration(nextDuration);
+            if (currentTrack.resumeTime && currentTrack.resumeTime < nextDuration) {
+              event.currentTarget.currentTime = currentTrack.resumeTime;
+              setElapsed(currentTrack.resumeTime);
+            }
+          }}
+          onTimeUpdate={(event) => {
+            const nextElapsed = event.currentTarget.currentTime || 0;
+            const nextDuration = event.currentTarget.duration || duration;
+            setElapsed(nextElapsed);
+            updateProgress(currentTrack.id, nextElapsed, nextDuration);
+          }}
+          onEnded={() => {
+            const nextDuration = duration || audioRef.current?.duration || 0;
+            updateProgress(currentTrack.id, nextDuration, nextDuration);
+            markEpisodeFinished(currentTrack.id);
+            setIsPlaying(false);
+          }}
         />
       </div>
     </div>

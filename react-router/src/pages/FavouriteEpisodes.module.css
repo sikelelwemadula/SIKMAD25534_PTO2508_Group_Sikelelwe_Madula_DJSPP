@@ -79,6 +79,39 @@
   line-height: 1.4;
 }
 
+.progressText {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #2563eb;
+  margin-top: 0.5rem;
+}
+
+.progressBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.4rem;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.finishedBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.4rem;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: #dcfce7;
+  color: #166534;
+}
+
 .heartButton {
   position: absolute;
   top: 16px;

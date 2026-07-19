@@ -2,6 +2,7 @@
   max-width: 1000px;
   margin: 0 auto;
   padding: 2rem;
+  background: var(--background);
 }
 
 strong {
@@ -11,7 +12,7 @@ strong {
 .header {
   display: flex;
   gap: 2rem;
-  background: white;
+  background: var(--surface);
   padding: 2rem;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -20,7 +21,7 @@ strong {
 .backButton {
   background: none;
   border: none;
-  color: #333;
+  color: var(--text-main);
   font-size: 1rem;
   cursor: pointer;
   margin-bottom: 1rem;
@@ -46,10 +47,11 @@ strong {
   font-weight: bold;
   margin-bottom: 0.5rem;
   margin-top: 0px;
+  color: var(--text-main);
 }
 
 .description {
-  color: #444;
+  color: var(--text-soft);
   margin-bottom: 1rem;
 }
 
@@ -61,7 +63,8 @@ strong {
 }
 
 .genreBadge {
-  background-color: #e5e7eb;
+  background-color: var(--tag-bg);
+  color: var(--tag-text);
   padding: 0.3rem 0.75rem;
   border-radius: 9999px;
   font-size: 0.85rem;
@@ -69,7 +72,7 @@ strong {
 
 .metaInfo p {
   font-size: 0.875rem;
-  color: #555;
+  color: var(--surface-muted);
   margin: 0.25rem 0;
 }
 
@@ -86,7 +89,7 @@ strong {
 }
 
 .seasonDetails {
-  background: white;
+  background: var(--surface);
   padding: 2rem;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -110,7 +113,9 @@ strong {
 .dropdown {
   padding: 0.4rem 0.6rem;
   border-radius: 4px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-main);
   min-width: 140px;
   height: 40px;
   order: 2;
@@ -130,7 +135,7 @@ strong {
 }
 
 .releaseInfo {
-  color: #777;
+  color: var(--surface-muted);
   font-size: 0.875rem;
   margin-top: 0.5rem;
 }
@@ -144,10 +149,10 @@ strong {
 .episodeCard {
   position: relative;
   display: flex;
-  background: #f9fafb;
+  background: var(--surface);
   padding: 1rem;
   padding-bottom: 3.5rem;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border);
   border-radius: 6px;
   transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
@@ -166,13 +171,46 @@ strong {
 
 .episodeCard:hover {
   transform: translateY(-4px);
-  background: #ffffff;
+  background: var(--background);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  border-color: #d1d5db;
+  border-color: var(--border);
 }
 .episodeInfo {
   margin-left: 10px;
   flex: 1;
+}
+
+.progressText {
+  margin: 0.35rem 0 0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #2563eb;
+}
+
+.progressBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.35rem;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.finishedBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.35rem;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: #dcfce7;
+  color: #166534;
 }
 
 .playButton {
@@ -181,8 +219,8 @@ strong {
   bottom: 1rem;
   border: none;
   border-radius: 999px;
-  background: #111;
-  color: white;
+  background: var(--surface-strong);
+  color: var(--button-text);
   padding: 0.35rem 0.75rem;
   font-size: 0.8rem;
   font-weight: 600;
@@ -200,10 +238,11 @@ strong {
   font-size: 0.95rem;
   margin-bottom: 0.25rem;
   margin-top: 0px;
+  color: var(--text-main);
 }
 
 .episodeDesc {
-  color: #555;
+  color: var(--text-soft);
   font-size: 0.875rem;
 }
 
