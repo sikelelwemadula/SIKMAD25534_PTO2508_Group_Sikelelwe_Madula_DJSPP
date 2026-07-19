@@ -4,7 +4,7 @@
   align-items: center;
   gap: 1rem;
   padding: 1rem;
-  background: white;
+  background: var(--header-bg);
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
 }
 
@@ -16,7 +16,7 @@
 
 .appHeader a {
   text-decoration: none;
-  color: black;
+  color: var(--header-text);
 }
 
 .appHeader nav a {
@@ -30,6 +30,6 @@
   padding: 0.5rem 0.9rem;
   cursor: pointer;
   font-weight: 600;
-  background: #111827;
-  color: white;
+  background: var(--surface-strong);
+  color: var(--button-text);
 }
