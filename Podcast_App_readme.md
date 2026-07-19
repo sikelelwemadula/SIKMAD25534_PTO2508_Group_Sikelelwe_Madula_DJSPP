@@ -1,6 +1,6 @@
 # 🎙️ Podcast Web Application
 
-📌vercel link - add link 
+📌vercel link (https://vercel.com/sikelelwe-madula/sikmad-25534-pto-2508-group-sikelelwe-madula-djspp/deployments )
 
 A web-based audio streaming application built with React.js that allows users to browse podcast shows, manage favorite episodes, and listen to audio tracks seamlessly. This is the final project in our JavaScript learning journey with CodeSpace.
 
