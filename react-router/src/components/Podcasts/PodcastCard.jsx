@@ -4,19 +4,20 @@ import styles from "./PodcastCard.module.css";
 import GenreTags from "../UI/GenreTags";
 
 /**
- * Renders a single podcast preview card with image, title, number of seasons,
- * genres (as styled tags), and the last updated date.
+ * A preview card component for an individual podcast show.
+ * Displays the show's cover image, title, total seasons, genre tags, and formatted last updated date.
+ * Clicking anywhere on the card navigates the user to the detailed view of that specific show.
  *
- * @param {Object} props
- * @param {Object} props.podcast - The podcast data object to display.
- * @param {string} props.podcast.id - Unique ID of the podcast.
- * @param {string} props.podcast.title - Title of the podcast.
- * @param {string} props.podcast.image - URL of the podcast image.
- * @param {number} props.podcast.seasons - Number of seasons available.
- * @param {string} props.podcast.updated - ISO date string for the last update.
- * @param {Array<Object>} props.genres - Array of genre objects for mapping IDs to titles.
- *
- * @returns {JSX.Element} The rendered podcast card component.
+ * @component
+ * @param {Object} props - The component props.
+ * @param {Object} props.podcast - The detailed data object representing the podcast show.
+ * @param {string} props.podcast.id - The unique identifier of the podcast show.
+ * @param {string} props.podcast.title - The display title of the podcast.
+ * @param {string} props.podcast.image - The URL string pointing to the podcast's thumbnail image.
+ * @param {number} props.podcast.seasons - The total number of seasons available for the podcast.
+ * @param {number[]} props.podcast.genres - Array of genre IDs associated with the podcast.
+ * @param {string} props.podcast.updated - The ISO 8601 timestamp representing the last update date.
+ * @returns {JSX.Element} A clickable card element showcasing summary information for a show.
  */
 export default function PodcastCard({ podcast }) {
   const navigate = useNavigate();

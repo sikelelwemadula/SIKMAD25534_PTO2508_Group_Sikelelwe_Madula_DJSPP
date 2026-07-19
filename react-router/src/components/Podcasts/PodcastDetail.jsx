@@ -6,6 +6,13 @@ import GenreTags from "../UI/GenreTags";
 import { useAudio } from "../../context/AudioContext";
 import { PodcastContext } from "../../context/PodcastContext";
 
+/**
+ * Formats a duration given in seconds into a standard MM:SS string structure.
+ * Returns '0:00' if the value is invalid or infinite.
+ *
+ * @param {number} seconds - The time duration in seconds.
+ * @returns {string} The formatted time layout (e.g., "4:23").
+ */
 const formatTime = (seconds) => {
   if (!Number.isFinite(seconds)) return "0:00";
 
@@ -17,6 +24,31 @@ const formatTime = (seconds) => {
   return `${mins}:${secs}`;
 };
 
+/**
+ * A detailed view component for a specific podcast show.
+ * Renders metadata summary stats, season navigation options, an expanded episode layout list, 
+ * historical listen progress markers, and functional playback/favorite control toggles.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {Object} props.podcast - The complete data object representation for the selected podcast show.
+ * @param {string} props.podcast.id - The unique identifier of the podcast show.
+ * @param {string} props.podcast.title - The display name of the podcast show.
+ * @param {string} props.podcast.description - Summary text overview detailing the podcast context.
+ * @param {string} props.podcast.image - URL path string mapping to the main album cover.
+ * @param {string} props.podcast.updated - The ISO 8601 string representation indicating the latest update timeline.
+ * @param {Object[]} props.podcast.seasons - Structured array tracking individual season indices.
+ * @param {string} props.podcast.seasons[].title - The descriptive title assigned to a particular season collection.
+ * @param {string} props.podcast.seasons[].description - Contextual summary details detailing the specific season scope.
+ * @param {string} props.podcast.seasons[].image - URL path string pointing to unique season artwork assets.
+ * @param {Object[]} props.podcast.seasons[].episodes - Collection list containing standard episode details.
+ * @param {number} props.podcast.seasons[].episodes[].episode - The relative numeric identifier indexing the track order position.
+ * @param {string} props.podcast.seasons[].episodes[].title - The discrete display title of the specific audio episode.
+ * @param {string} props.podcast.seasons[].episodes[].description - Text description capturing individual episode event details.
+ * @param {string} props.podcast.seasons[].episodes[].file - The raw stream source URL pointing to the audio track file assets.
+ * @param {Object[]} props.genres - Collection list tracking localized category genre representations mapping details.
+ * @returns {JSX.Element} The compound dashboard layout tracking deep contextual structures for single podcast entities.
+ */
 export default function PodcastDetail({ podcast, genres }) {
   const [selectedSeasonIndex, setSelectedSeasonIndex] = useState(0);
   const season = podcast.seasons[selectedSeasonIndex];

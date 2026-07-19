@@ -1,6 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { useAudio } from "../context/AudioContext";
 
+/**
+ * Formats a duration given in seconds into a standard MM:SS string.
+ * Returns '0:00' if the value is invalid or infinite.
+ *
+ * @param {number} seconds - The time duration in seconds.
+ * @returns {string} The formatted time layout (e.g., "3:45").
+ */
 const formatTime = (seconds) => {
   if (!Number.isFinite(seconds)) return "0:00";
 
@@ -12,6 +19,14 @@ const formatTime = (seconds) => {
   return `${mins}:${secs}`;
 };
 
+/**
+ * GlobalPlayer component that renders a persistent audio playback bar at the bottom of the viewport.
+ * It manages synchronization between the HTML5 `<audio>` element API and the global `AudioContext` state,
+ * tracking track initialization, playback states, background timeline progress updates, and completion event hooks.
+ *
+ * @component
+ * @returns {JSX.Element|null} A fixed bottom playback controls element, or null if no track source is active.
+ */
 export function GlobalPlayer() {
   const {
     currentTrack,

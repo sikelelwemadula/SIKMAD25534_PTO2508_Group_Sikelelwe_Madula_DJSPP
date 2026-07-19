@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SliderFactory from "react-slick";
 import { genres } from "./data";
@@ -9,6 +9,14 @@ const Slider = SliderFactory?.default ?? SliderFactory;
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
+/**
+ * Custom navigation arrow button for sliding the carousel backwards.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {function} props.onClick - Click handler callback triggered by the slider controller.
+ * @returns {JSX.Element} A absolute-positioned back arrow button.
+ */
 function PrevArrow({ onClick }) {
   return (
     <button
@@ -40,6 +48,14 @@ function PrevArrow({ onClick }) {
   );
 }
 
+/**
+ * Custom navigation arrow button for sliding the carousel forwards.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {function} props.onClick - Click handler callback triggered by the slider controller.
+ * @returns {JSX.Element} An absolute-positioned forward arrow button.
+ */
 function NextArrow({ onClick }) {
   return (
     <button
@@ -71,6 +87,14 @@ function NextArrow({ onClick }) {
   );
 }
 
+/**
+ * RecommendedCarousel component that displays an interactive, horizontally scrollable slider interface.
+ * It dynamically maps through category genres, pairs each genre with its corresponding primary show metadata 
+ * loaded from global `PodcastContext`, and renders layout panels that link users directly to deep show breakdowns.
+ *
+ * @component
+ * @returns {JSX.Element} A responsive sliding card carousel showcasing aggregated genre recommendations.
+ */
 export default function RecommendedCarousel() {
   const { allPodcasts } = useContext(PodcastContext);
   const navigate = useNavigate();
@@ -239,4 +263,3 @@ export default function RecommendedCarousel() {
     </div>
   );
 }
-

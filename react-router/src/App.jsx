@@ -10,14 +10,16 @@ import GlobalPlayer from "./components/GlobalPlayer";
 import { ThemeProvider } from "./context/ThemeContext";
 import { ThemeToggle } from "./components/ThemeToggle";
 import "./styles/theme.css";
+
 /**
- * Root component of the Podcast Explorer app.
+ * Root component of the Podcast Web Application.
+ * 
+ * Orchestrates the global state architecture by nesting multi-provider context layers 
+ * (`ThemeProvider`, `AudioProvider`, and `PodcastProvider`) and configures core 
+ * client-side page routing configurations alongside persistent layout items.
  *
- * - Wraps the application in the `PodcastProvider` context for global state.
- * - Includes the `Header` component, displayed on all pages.
- * - Defines client-side routes using React Router.
- *
- * @returns {JSX.Element} The application component with routing and context.
+ * @component
+ * @returns {JSX.Element} The baseline application shell containing global state trees, layout shells, and page switches.
  */
 export default function App() {
   return (
