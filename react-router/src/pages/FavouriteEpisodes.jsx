@@ -36,6 +36,7 @@ export default function FavoriteEpisodes() {
             if (favorites.includes(uniqueId)) {
               compiledEpisodes.push({
                 id: uniqueId,
+                showId: show.id,
                 showTitle: show.title,
                 showImage: show.image,
                 seasonNumber: season.season,
@@ -43,7 +44,8 @@ export default function FavoriteEpisodes() {
                 title: episode.title,
                 description: episode.description,
                 genres: show.genres || [],
-                file: episode.file
+                file: episode.file,
+                updated: show.updated
               });
             }
           });
@@ -59,14 +61,35 @@ export default function FavoriteEpisodes() {
 
   const getFilteredAndSortedFavorites = () => {
     let data = [...favoriteEpisodesList];
+
     if (genre !== "all") {
-      data = data.filter((ep) => ep.genres.includes(Number(genre)));
+      const selectedGenre = genres.find((g) => String(g.id) === String(genre));
+
+      if (selectedGenre) {
+        data = data.filter((ep) =>
+          selectedGenre.shows.includes(String(ep.showId))
+        );
+      }
     }
-    if (sortKey === "title-asc") {
-      data.sort((a, b) => a.title.localeCompare(b.title));
-    } else if (sortKey === "title-desc") {
-      data.sort((a, b) => b.title.localeCompare(a.title));
+
+    switch (sortKey) {
+      case "title-asc":
+        data.sort((a, b) => a.title.localeCompare(b.title));
+        break;
+      case "title-desc":
+        data.sort((a, b) => b.title.localeCompare(a.title));
+        break;
+      case "date-asc":
+        data.sort((a, b) => new Date(a.updated) - new Date(b.updated));
+        break;
+      case "date-desc":
+        data.sort((a, b) => new Date(b.updated) - new Date(a.updated));
+        break;
+      case "default":
+      default:
+        break;
     }
+
     return data;
   };
 
