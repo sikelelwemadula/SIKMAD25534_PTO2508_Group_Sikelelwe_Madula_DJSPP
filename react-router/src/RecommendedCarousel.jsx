@@ -129,7 +129,7 @@ export default function RecommendedCarousel() {
 
   return (
     <div style={{ maxWidth: "860px", margin: "0 auto", padding: "15px 0" }}>
-      <h2 style={{ marginBottom: "15px", fontSize: "1.1rem", textAlign: "center", color: "#333" }}>
+      <h2 style={{ marginBottom: "15px", fontSize: "1.1rem", textAlign: "center", color: "var(--text-main)" }}>
         Recommended Primary Shows per Genre
       </h2>
 
@@ -145,12 +145,12 @@ export default function RecommendedCarousel() {
                   onMouseEnter={() => setHoveredGenreId(genre.id)}
                   onMouseLeave={() => setHoveredGenreId(null)}
                   style={{
-                    background: "#ffffff",
-                    color: "#1a1a1a",
+                    background: "var(--surface)",
+                    color: "var(--text-main)",
                     borderRadius: "10px",
                     padding: "12px 14px",
                     boxShadow: isGenreHovered ? "0 10px 22px rgba(0,0,0,0.12)" : "0 4px 12px rgba(0,0,0,0.06)",
-                    border: "1px solid #e5e7eb",
+                    border: "1px solid var(--border)",
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
@@ -191,7 +191,7 @@ export default function RecommendedCarousel() {
                           height: "200px",
                           minWidth: "200px",
                           minHeight: "200px",
-                          background: "#f3f4f6",
+                          background: "var(--background)",
                           borderRadius: "8px",
                           overflow: "hidden",
                           position: "relative",

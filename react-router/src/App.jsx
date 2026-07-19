@@ -7,6 +7,9 @@ import { PodcastProvider } from "./context/PodcastContext";
 import { AudioProvider } from "./context/AudioContext";
 import GlobalPlayer from "./components/GlobalPlayer";
 
+import { ThemeProvider } from "./context/ThemeContext";
+import { ThemeToggle } from "./components/ThemeToggle";
+import "./styles/theme.css";
 /**
  * Root component of the Podcast Explorer app.
  *
@@ -18,6 +21,7 @@ import GlobalPlayer from "./components/GlobalPlayer";
  */
 export default function App() {
   return (
+    <ThemeProvider>
     <AudioProvider>
       <PodcastProvider>
         <div style={{ minHeight: "100vh", position: "relative" }}>
@@ -33,5 +37,6 @@ export default function App() {
         </div>
       </PodcastProvider>
     </AudioProvider>
+    </ThemeProvider>
   );
 }

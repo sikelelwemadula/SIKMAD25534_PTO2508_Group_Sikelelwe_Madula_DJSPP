@@ -1,7 +1,7 @@
 .container {
   padding: 24px;
   font-family: sans-serif;
-  background-color: #f9f9f9;
+  background-color: var(--background);
   min-height: 100vh;
 }
 
@@ -9,16 +9,16 @@
   font-size: 28px;
   margin-bottom: 24px;
   font-weight: bold;
-  color: #111;
+  color: var(--text-main);
 }
 
 .emptyMessage {
-  color: #666;
+  color: var(--surface-muted);
 }
 
 .showCard {
   margin-bottom: 32px;
-  background-color: #fff;
+  background-color: var(--surface);
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
@@ -26,10 +26,10 @@
 
 .showTitleHeader {
   font-size: 20px;
-  border-bottom: 2px solid #eaeaea;
+  border-bottom: 2px solid var(--border);
   padding-bottom: 8px;
   margin-bottom: 16px;
-  color: #111;
+  color: var(--text-main);
 }
 
 .episodesList {
@@ -40,7 +40,7 @@
 
 .episodeRow {
   display: flex;
-  border: 1px solid #eaeaea;
+  border: 1px solid var(--border);
   border-radius: 6px;
   padding: 16px;
   position: relative;
@@ -61,7 +61,7 @@
 
 .metaText {
   font-size: 12px;
-  color: #666;
+  color: var(--surface-muted);
   font-weight: 500;
 }
 
@@ -69,11 +69,12 @@
   font-size: 16px;
   margin: 4px 0;
   font-weight: 600;
+  color: var(--text-main);
 }
 
 .description {
   font-size: 14px;
-  color: #444;
+  color: var(--text-soft);
   margin: 0;
   line-height: 1.4;
 }
@@ -91,7 +92,7 @@
 .container {
   padding: 16px;
   font-family: sans-serif;
-  background-color: #f9f9f9;
+  background-color: var(--background);
   min-height: 100vh;
 }
 
@@ -99,7 +100,7 @@
   font-size: 24px;
   margin-bottom: 20px;
   font-weight: bold;
-  color: #111;
+  color: var(--text-main);
 }
 
 .controls {
@@ -110,12 +111,12 @@
 }
 
 .emptyMessage {
-  color: #666;
+  color: var(--surface-muted);
 }
 
 .showCard {
   margin-bottom: 24px;
-  background-color: #fff;
+  background-color: var(--surface);
   padding: 16px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
@@ -123,10 +124,10 @@
 
 .showTitleHeader {
   font-size: 18px;
-  border-bottom: 2px solid #eaeaea;
+  border-bottom: 2px solid var(--border);
   padding-bottom: 8px;
   margin-bottom: 16px;
-  color: #111;
+  color: var(--text-main);
 }
 
 .episodesList {
@@ -138,7 +139,7 @@
 .episodeRow {
   display: flex;
   flex-direction: column; /* Stack vertically on small phones */
-  border: 1px solid #eaeaea;
+  border: 1px solid var(--border);
   border-radius: 6px;
   padding: 16px;
   gap: 16px;
@@ -159,7 +160,7 @@
 
 .metaText {
   font-size: 12px;
-  color: #666;
+  color: var(--surface-muted);
   font-weight: 500;
 }
 
@@ -167,11 +168,12 @@
   font-size: 15px;
   margin: 4px 0;
   font-weight: 600;
+  color: var(--text-main);
 }
 
 .description {
   font-size: 13px;
-  color: #444;
+  color: var(--text-soft);
   margin: 0;
   line-height: 1.4;
 }
@@ -181,14 +183,14 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid var(--border);
   padding-top: 12px;
 }
 
 .playButton {
   padding: 8px 16px;
-  background-color: #111;
-  color: #fff;
+  background-color: var(--surface-strong);
+  color: var(--button-text);
   border: none;
   border-radius: 14px;
   margin-top: 28px;

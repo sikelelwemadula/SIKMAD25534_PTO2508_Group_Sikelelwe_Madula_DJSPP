@@ -2,9 +2,16 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
   padding: 1rem;
   background: white;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .appHeader a {
@@ -15,5 +22,14 @@
 .appHeader nav a {
   font-size: 1.25rem;
   font-weight: 600;
-  
+}
+
+.appHeader button {
+  border: none;
+  border-radius: 999px;
+  padding: 0.5rem 0.9rem;
+  cursor: pointer;
+  font-weight: 600;
+  background: #111827;
+  color: white;
 }
