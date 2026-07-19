@@ -246,6 +246,9 @@ strong {
   font-size: 0.875rem;
 }
 
+/*===============
+Media styles
+=================*/
 @media (max-width: 600px) {
   .container {
     padding: 1rem;

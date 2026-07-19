@@ -58,6 +58,9 @@
   transform: scale(1.1);
 }
 
+/*===============
+Media phone styles
+=================*/
 @media (max-width: 600px) {
   .appHeader {
     align-items: stretch;
